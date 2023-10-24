@@ -43,17 +43,20 @@ async function main() {
 function saveFrontendFiles(contractName, contractInstance) {
   const fs = require("fs");
   const contractsDir = path.join(__dirname, "..", "frontend", "src", "contracts");
+  const filePath = path.join(contractsDir, "contract-address.json");
 
-  if (!fs.existsSync(contractsDir)) {
-    fs.mkdirSync(contractsDir);
+  let data = {};
+
+  if (fs.existsSync(filePath)) {
+    // If the file already exists, read its content
+    data = JSON.parse(fs.readFileSync(filePath));
   }
 
+  // Add or update the contract data
+  data[contractName] = contractInstance.address;
 
-  fs.writeFileSync(
-    path.join(contractsDir, "contract-address.json"),
-    JSON.stringify({ [contractName]: contractInstance.address }, undefined, 2)
-  );
-
+  // Write the updated data back to the file
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
   const contractArtifact = artifacts.readArtifactSync(contractName);
 
@@ -62,6 +65,7 @@ function saveFrontendFiles(contractName, contractInstance) {
     JSON.stringify(contractArtifact, null, 2)
   );
 }
+
 
 
 main()
