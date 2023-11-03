@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract FiveParameterContract {
+contract Lands {
     struct ContractObject {
         uint256 id;
         address owner;
