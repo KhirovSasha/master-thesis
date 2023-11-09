@@ -1,16 +1,27 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { GridLands } from "./GridLands";
 
-export function GetParameter({par}) {
+export function GetParameter({ par }) {
   const [parameter, setParameter] = useState(null);
-  
+  const [lands, setLands] = useState(null);
 
+  async function creat() {
+    try {
+      await par.createObject(1);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await par.myParameter();
-        setParameter(parseInt(result, 10)); 
-        console.log(parameter)
+        const result = await par.getObjectCount();
+        const arrayLends = await par.getAllObjects();
+      
+        setLands(arrayLends);
+        setParameter(parseInt(result, 10));
+
       } catch (error) {
         console.error("Error:", error);
       }
@@ -19,7 +30,13 @@ export function GetParameter({par}) {
     fetchData();
   }, []);
 
+  console.log(lands);
+
   return (
-    <h1>{parameter}</h1>
+    <div>
+      <h1>{parameter}</h1>
+      <button onClick={creat}>Clikc</button>
+      <GridLands arrayLends={lands} test={1}/>
+    </div>
   );
 }
