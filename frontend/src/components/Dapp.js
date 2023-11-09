@@ -2,7 +2,7 @@ import React from "react";
 import { ethers } from "ethers";
 
 import TokenArtifact from "../contracts/Token.json";
-import TokenSecondArtifact from "../contracts/FiveParameterContract.json";
+import LandsArtifact from "../contracts/Lands.json";
 import contractAddress from "../contracts/contract-address.json";
 
 import { NoWalletDetected } from "./NoWalletDetected";
@@ -56,7 +56,6 @@ export class Dapp extends React.Component {
       return <Loading />;
     }
 
-    // If everything is loaded, we render the application.
     return (
       <div className="container p-4">
         <div className="row">
@@ -187,8 +186,6 @@ export class Dapp extends React.Component {
     // We first initialize ethers by creating a provider using window.ethereum
     this._provider = new ethers.providers.Web3Provider(window.ethereum);
 
-    // Then, we initialize the contract using that provider and the token's
-    // artifact. You can do this same thing with your contracts.
     this._token = new ethers.Contract(
       contractAddress.Token,
       TokenArtifact.abi,
@@ -196,8 +193,8 @@ export class Dapp extends React.Component {
     );
 
     this._tokenSecond = new ethers.Contract(
-      contractAddress.FiveParameterContract,
-      TokenSecondArtifact.abi,
+      contractAddress.Lands,
+      LandsArtifact.abi,
       this._provider.getSigner(0)
     );
   }
