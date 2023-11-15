@@ -41,17 +41,8 @@ contract Lands {
         return (object.id, object.owner, object.value);
     }
 
-    function getAllObjects() public view returns (uint256[] memory, address[] memory, uint256[] memory) {
-        uint256[] memory ids = new uint256[](contractObjects.length);
-        address[] memory owners = new address[](contractObjects.length);
-        uint256[] memory values = new uint256[](contractObjects.length);
-
-        for (uint256 i = 0; i < contractObjects.length; i++) {
-            ids[i] = contractObjects[i].id;
-            owners[i] = contractObjects[i].owner;
-            values[i] = contractObjects[i].value;
-        }
-
-        return (ids, owners, values);
+    function getAllObjects() public view returns (ContractObject[] memory) {
+        // Return the array of objects directly.
+        return contractObjects;
     }
 }
