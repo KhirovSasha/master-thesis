@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { GridLands } from "./GridLands";
+import { Link } from "react-router-dom";
 
 export function GetParameter({ par }) {
   const [parameter, setParameter] = useState(null);
@@ -30,7 +31,7 @@ export function GetParameter({ par }) {
   return (
     <div>
       <h1>Count of Lands: {parameter}</h1>
-      <button type="button" onClick={creat} class="btn btn-success mb-3">Create</button>
+      <Link type="button" to="create-land" class="btn btn-success mb-3">Create</Link>
       <GridLands par={par} test={1}/>
     </div>
   );

@@ -12,9 +12,14 @@ import { Transfer } from "./Transfer";
 import { TransactionErrorMessage } from "./TransactionErrorMessage";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
-import { GetParameter } from './GetParameter'
+import { GetParameter } from "./GetParameter";
 
-const HARDHAT_NETWORK_ID = '31337';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./pages/Layout";
+import NoPage from "./pages/NoPage";
+import { CreateLand } from "./Create";
+
+const HARDHAT_NETWORK_ID = "31337";
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
 
 export class Dapp extends React.Component {
@@ -42,13 +47,12 @@ export class Dapp extends React.Component {
     if (!this.state.selectedAddress) {
       return (
         <div>
-          <ConnectWallet 
-          connectWallet={() => this._connectWallet()} 
-          networkError={this.state.networkError}
-          dismiss={() => this._dismissNetworkError()}
-        />
+          <ConnectWallet
+            connectWallet={() => this._connectWallet()}
+            networkError={this.state.networkError}
+            dismiss={() => this._dismissNetworkError()}
+          />
         </div>
-        
       );
     }
 
@@ -58,57 +62,25 @@ export class Dapp extends React.Component {
 
     return (
       <div className="container p-4">
-        <div className="row">
-          <div className="col-12">
-            <h1>
-              {this.state.tokenData.name} ({this.state.tokenData.symbol})
-            </h1>
-            <p>
-              Welcome <b>{this.state.selectedAddress}</b>, you have{" "}
-              <b>
-                {this.state.balance.toString()} {this.state.tokenData.symbol}
-              </b>
-              .
-            </p>
-          </div>
-        </div>
-        <hr />
-
-        <div className="row">
-          <div className="col-12">
-            {/* 
-              Sending a transaction isn't an immediate action. You have to wait
-              for it to be mined.
-              If we are waiting for one, we show a message here.
-            */}
-            {this.state.txBeingSent && (
-              <WaitingForTransactionMessage txHash={this.state.txBeingSent} />
-            )}
-
-            {/* 
-              Sending a transaction can fail in multiple ways. 
-              If that happened, we show a message here.
-            */}
-            {this.state.transactionError && (
-              <TransactionErrorMessage
-                message={this._getRpcErrorMessage(this.state.transactionError)}
-                dismiss={() => this._dismissTransactionError()}
-              />
-            )}
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-12">
-            {/*
-              If the user has no tokens, we don't show the Transfer form
-            */}
-            {this.state.balance.eq(0) && (
-              <NoTokensMessage selectedAddress={this.state.selectedAddress} />
-            )}
-          </div>
-        </div>
-        <GetParameter par={this._tokenSecond}/>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Layout
+                  selectedAddress={this.state.selectedAddress}
+                  balance={this.state.balance}
+                  tokenData={this.state.tokenData.symbol}
+                />
+              }
+            >
+              <Route index element={<GetParameter par={this._tokenSecond} />} />
+              <Route path="create-land" element={<CreateLand />} />
+              <Route path="*" element={<NoPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+        
       </div>
     );
   }
@@ -125,7 +97,9 @@ export class Dapp extends React.Component {
 
     // To connect to the user's wallet, we have to run this method.
     // It returns a promise that will resolve to the user's address.
-    const [selectedAddress] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const [selectedAddress] = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
 
     // Once we have the address, we can initialize the application.
 
@@ -140,11 +114,11 @@ export class Dapp extends React.Component {
       // `accountsChanged` event can be triggered with an undefined newAddress.
       // This happens when the user removes the Dapp from the "Connected
       // list of sites allowed access to your addresses" (Metamask > Settings > Connections)
-      // To avoid errors, we reset the dapp state 
+      // To avoid errors, we reset the dapp state
       if (newAddress === undefined) {
         return this._resetState();
       }
-      
+
       this._initialize(newAddress);
     });
   }
@@ -303,7 +277,7 @@ export class Dapp extends React.Component {
   }
 
   async _switchChain() {
-    const chainIdHex = `0x${HARDHAT_NETWORK_ID.toString(16)}`
+    const chainIdHex = `0x${HARDHAT_NETWORK_ID.toString(16)}`;
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: chainIdHex }],
