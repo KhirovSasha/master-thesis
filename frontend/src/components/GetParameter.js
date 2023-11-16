@@ -29,8 +29,8 @@ export function GetParameter({ par }) {
 
   return (
     <div>
-      <h1>{parameter}</h1>
-      <button onClick={creat}>Clikc</button>
+      <h1>Count of Lands: {parameter}</h1>
+      <button type="button" onClick={creat} class="btn btn-success mb-3">Create</button>
       <GridLands par={par} test={1}/>
     </div>
   );

@@ -106,21 +106,6 @@ export class Dapp extends React.Component {
             {this.state.balance.eq(0) && (
               <NoTokensMessage selectedAddress={this.state.selectedAddress} />
             )}
-
-            {/*
-              This component displays a form that the user can use to send a 
-              transaction and transfer some tokens.
-              The component doesn't have logic, it just calls the transferTokens
-              callback.
-            */}
-            {this.state.balance.gt(0) && (
-              <Transfer
-                transferTokens={(to, amount) =>
-                  this._transferTokens(to, amount)
-                }
-                tokenSymbol={this.state.tokenData.symbol}
-              />
-            )}
           </div>
         </div>
         <GetParameter par={this._tokenSecond}/>
