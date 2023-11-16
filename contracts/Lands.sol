@@ -45,4 +45,24 @@ contract Lands {
         // Return the array of objects directly.
         return contractObjects;
     }
+
+    function deleteObject(uint256 objectId) public {
+        uint256 indexToDelete = findObjectIndex(objectId);
+
+        require(indexToDelete != type(uint256).max, "Object not found");
+        require(contractObjects[indexToDelete].owner == msg.sender, "Caller is not the owner");
+
+        contractObjects[indexToDelete] = contractObjects[contractObjects.length - 1];
+        contractObjects.pop();
+    }
+
+    function findObjectIndex(uint256 objectId) internal view returns (uint256) {
+        for (uint256 i = 0; i < contractObjects.length; i++) {
+            if (contractObjects[i].id == objectId) {
+                return i;
+            }
+        }
+
+        return type(uint256).max; 
+    }
 }
