@@ -56,6 +56,15 @@ contract Lands {
         contractObjects.pop();
     }
 
+    function editObject(uint256 objectId, uint256 newValue) public {
+        uint256 indexToEdit = findObjectIndex(objectId);
+
+        require(indexToEdit != type(uint256).max, "Object not found");
+        require(contractObjects[indexToEdit].owner == msg.sender, "Caller is not the owner");
+
+        contractObjects[indexToEdit].value = newValue;
+    }
+
     function findObjectIndex(uint256 objectId) internal view returns (uint256) {
         for (uint256 i = 0; i < contractObjects.length; i++) {
             if (contractObjects[i].id == objectId) {
