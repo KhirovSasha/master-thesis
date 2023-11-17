@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export function GridLands({ par, selectedAddress }) {
   const [lands, setLands] = useState([]);
@@ -64,9 +65,7 @@ export function GridLands({ par, selectedAddress }) {
                     <a href="#" className="card-link">
                       Card link
                     </a>
-                    <a href="#" className="card-link">
-                      Another link
-                    </a>
+                    <Link to={`/edit-land/${parseInt(item.id, 10)}`}>Edit Land</Link>
 
                     {selectedAddress.toLowerCase() !==
                     item.owner.toLowerCase() ? (

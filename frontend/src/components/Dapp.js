@@ -8,16 +8,13 @@ import contractAddress from "../contracts/contract-address.json";
 import { NoWalletDetected } from "./NoWalletDetected";
 import { ConnectWallet } from "./ConnectWallet";
 import { Loading } from "./Loading";
-import { Transfer } from "./Transfer";
-import { TransactionErrorMessage } from "./TransactionErrorMessage";
-import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
-import { NoTokensMessage } from "./NoTokensMessage";
 import { GetParameter } from "./GetParameter";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
 import NoPage from "./pages/NoPage";
-import { CreateLand } from "./Create";
+import { CreateLand } from "./CreateLand";
+import EditLand from "./EditLand";
 
 const HARDHAT_NETWORK_ID = "31337";
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
@@ -77,6 +74,7 @@ export class Dapp extends React.Component {
               <Route index element={<GetParameter par={this._tokenSecond} selectedAddress={this.state.selectedAddress} />} />
               <Route path="create-land" element={<CreateLand par={this._tokenSecond}/>} />
               <Route path="*" element={<NoPage />} />
+              <Route path="edit-land/:id" element={<EditLand par={this._tokenSecond} />}/>
             </Route>
           </Routes>
         </BrowserRouter>
