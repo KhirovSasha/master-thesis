@@ -74,7 +74,7 @@ export class Dapp extends React.Component {
                 />
               }
             >
-              <Route index element={<GetParameter par={this._tokenSecond} />} />
+              <Route index element={<GetParameter par={this._tokenSecond} selectedAddress={this.state.selectedAddress} />} />
               <Route path="create-land" element={<CreateLand par={this._tokenSecond}/>} />
               <Route path="*" element={<NoPage />} />
             </Route>
