@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ethers } from 'ethers';
+import { useNavigate } from "react-router-dom";
 
 function EditLand({ par }) {
   const { id } = useParams();
   const [landData, setLandData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [contractValue, setContractValue] = useState(0);
+  const navigate = useNavigate(); // useNavigate replaces useHistory
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,21 +34,14 @@ function EditLand({ par }) {
 
   const handleChange = (event) => {
     setContractValue(event.target.value)
-    if(document.getElementById('test').value == 0) {
-      document.getElementById('test').value = landData.value
-    } else {
-      document.getElementById('test').value = event.target.value;
-    }
-    
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-
-    // Now you can use the 'contractValue' state to access the form value
-    console.log("Contract Value:", contractValue);
+    event.preventDefault(); 
+    const solidityNumber = ethers.BigNumber.from(id);
+    
     try {
-      await par.createObject(Number(contractValue));
+      await par.editObject(solidityNumber, Number(contractValue));
       navigate("/");
     } catch (error) {
       console.error("Error:", error);
@@ -69,7 +64,7 @@ function EditLand({ par }) {
                 type="number"
                 className="form-control"
                 value={contractValue}
-                //onChange={handleChange}
+                onChange={handleChange}
                 id='test'
               />
             </div>
