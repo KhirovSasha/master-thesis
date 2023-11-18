@@ -11,7 +11,7 @@ export function GridLands({ par, selectedAddress }) {
         const arrayLends = await par.getAllObjects();
 
         setLands(arrayLends);
-        setIsLoading(false); // Позначте, що дані завантажено
+        setIsLoading(false); 
       } catch (error) {
         console.error("Error:", error);
       }
@@ -65,7 +65,7 @@ export function GridLands({ par, selectedAddress }) {
                     <a href="#" className="card-link">
                       Card link
                     </a>
-                    <Link to={`/edit-land/${parseInt(item.id, 10)}`}>Edit Land</Link>
+                    <Link className="btn btn-primary" to={`/edit-land/${item.id}`}>Edit Land</Link>
 
                     {selectedAddress.toLowerCase() !==
                     item.owner.toLowerCase() ? (

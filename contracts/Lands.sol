@@ -34,11 +34,12 @@ contract Lands {
         return contractObjects.length;
     }
 
-    function getObject(uint256 index) public view returns (uint256, address, uint256) {
+    function getObject(uint256 index) public view returns (ContractObject memory) {
         // Get the id, owner, and value of an object by index.
-        require(index < contractObjects.length, "Index out of bounds");
-        ContractObject memory object = contractObjects[index];
-        return (object.id, object.owner, object.value);
+        uint256 indexOfObject = findObjectIndex(index);
+
+        ContractObject memory object = contractObjects[indexOfObject];
+        return object;
     }
 
     function getAllObjects() public view returns (ContractObject[] memory) {
