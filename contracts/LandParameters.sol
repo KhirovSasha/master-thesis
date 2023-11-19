@@ -1,21 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-
-// This is the main building block for smart contracts.
 contract LandParameters {
    struct LandArray {
-        uint256 landId1;
-        uint256 landId2;
-        string connectionInfo; // Adding a string parameter
-        // Add more parameters as needed
+        uint256 landId;
+        string info; 
     }
 
     LandArray[] public landConnections;
 
-    function createConnection(uint256 _landId1, uint256 _landId2, string memory _connectionInfo) public {
-        // You may want to add additional validation logic here
-        LandArray memory newConnection = LandArray(_landId1, _landId2, _connectionInfo);
+    function createConnection(uint256 _landId, string memory _info) public {
+        LandArray memory newConnection = LandArray(_landId, _info);
         landConnections.push(newConnection);
     }
 
