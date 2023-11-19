@@ -26,6 +26,10 @@ async function main() {
       name: "Lands",
       factory: await ethers.getContractFactory("Lands"),
     },
+    {
+      name: "LandParameters",
+      factory: await ethers.getContractFactory("LandParameters"),
+    },
     // In this place add more contracts as needed
   ];
   

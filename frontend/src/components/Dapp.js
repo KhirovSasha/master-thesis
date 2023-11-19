@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 
 import TokenArtifact from "../contracts/Token.json";
 import LandsArtifact from "../contracts/Lands.json";
+import LandParameterArtifact from "../contracts/LandParameters.json"
 import contractAddress from "../contracts/contract-address.json";
 
 import { NoWalletDetected } from "./NoWalletDetected";
@@ -71,7 +72,7 @@ export class Dapp extends React.Component {
                 />
               }
             >
-              <Route index element={<GetParameter par={this._tokenSecond} selectedAddress={this.state.selectedAddress} />} />
+              <Route index element={<GetParameter par={this._tokenSecond} selectedAddress={this.state.selectedAddress}/>} />
               <Route path="create-land" element={<CreateLand par={this._tokenSecond}/>} />
               <Route path="*" element={<NoPage />} />
               <Route path="edit-land/:id" element={<EditLand par={this._tokenSecond} />}/>
@@ -152,6 +153,12 @@ export class Dapp extends React.Component {
     this._tokenSecond = new ethers.Contract(
       contractAddress.Lands,
       LandsArtifact.abi,
+      this._provider.getSigner(0)
+    );
+
+    this._LandParametersToken = new ethers.Contract(
+      contractAddress.LandParameters,
+      LandParameterArtifact.abi,
       this._provider.getSigner(0)
     );
   }
