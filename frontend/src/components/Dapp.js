@@ -16,6 +16,7 @@ import Layout from "./pages/Layout";
 import NoPage from "./pages/NoPage";
 import { CreateLand } from "./CreateLand";
 import EditLand from "./EditLand";
+import LandParameters from "./LandParameters";
 
 const HARDHAT_NETWORK_ID = "31337";
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
@@ -72,10 +73,11 @@ export class Dapp extends React.Component {
                 />
               }
             >
-              <Route index element={<GetParameter par={this._tokenSecond} selectedAddress={this.state.selectedAddress}/>} />
+              <Route index element={<GetParameter par={this._tokenSecond}  selectedAddress={this.state.selectedAddress}/>} />
               <Route path="create-land" element={<CreateLand par={this._tokenSecond}/>} />
               <Route path="*" element={<NoPage />} />
               <Route path="edit-land/:id" element={<EditLand par={this._tokenSecond} />}/>
+              <Route path="land-parameters/:id" element={<LandParameters parametersAt={this._LandParametersToken} />}/>
             </Route>
           </Routes>
         </BrowserRouter>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export function GridLands({ par, selectedAddress }) {
+export function GridLands({ par, selectedAddress}) {
   const [lands, setLands] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -62,10 +62,8 @@ export function GridLands({ par, selectedAddress }) {
                       Some quick example text to build on the card title and
                       make up the bulk of the card's content.
                     </p>
-                    <a href="#" className="card-link">
-                      Card link
-                    </a>
-                    <Link className="btn btn-primary" to={`/edit-land/${item.id}`}>Edit Land</Link>
+                    <Link className="btn btn-info" to={`/land-parameters/${item.id}`}>Info</Link>
+                    <Link className="btn btn-primary ml-3" to={`/edit-land/${item.id}`}>Edit Land</Link>
 
                     {selectedAddress.toLowerCase() !==
                     item.owner.toLowerCase() ? (
