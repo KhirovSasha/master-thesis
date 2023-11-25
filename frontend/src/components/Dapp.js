@@ -10,6 +10,7 @@ import { NoWalletDetected } from "./NoWalletDetected";
 import { ConnectWallet } from "./ConnectWallet";
 import { Loading } from "./Loading";
 import { GetParameter } from "./GetParameter";
+import { CreateParameter } from "./CreateParameter";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
@@ -78,6 +79,7 @@ export class Dapp extends React.Component {
               <Route path="*" element={<NoPage />} />
               <Route path="edit-land/:id" element={<EditLand par={this._tokenSecond} />}/>
               <Route path="land-parameters/:id" element={<LandParameters parametersAt={this._LandParametersToken} />}/>
+              <Route path="land/:id/create-parameter" element={<CreateParameter parametersAt={this._LandParametersToken}/>} />
             </Route>
           </Routes>
         </BrowserRouter>
