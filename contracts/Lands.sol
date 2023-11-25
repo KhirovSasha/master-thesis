@@ -2,31 +2,58 @@
 pragma solidity ^0.8.0;
 
 contract Lands {
+    enum LegalStatus {
+        AgriculturalLands,
+        LandsOfSettlements,
+        IndustrialAndCommercialLands,
+        RecreationalLands,
+        LandForConstruction,
+        LandsOfTheWaterFund,
+        LandsOfTheForestFund,
+        LandObjectsAndSpecialPurposes
+    }
+
     struct ContractObject {
         uint256 id;
         address owner;
-        uint256 value;
+        uint256 area;
+        string cadastralNumber;
+        LegalStatus legalStatus;
     }
 
     ContractObject[] public contractObjects;
     uint256 private objectIdCounter = 1; // Initialize the counter for object IDs.
 
     constructor() {
-        addObject(100);
-        addObject(200);
-        addObject(300);
+        addObject(100, "Cadastral-100", LegalStatus.LandsOfSettlements);
+        addObject(200, "Cadastral-200", LegalStatus.LandForConstruction);
+        addObject(300, "Cadastral-300", LegalStatus.LandObjectsAndSpecialPurposes);
     }
 
-    function addObject(uint256 _value) private {
+    function addObject(
+        uint256 _value,
+        string memory _cadastralNumber,
+        LegalStatus _legalStatus
+    ) private {
         // Create and add a new object to the array.
-        ContractObject memory newObject = ContractObject(objectIdCounter, msg.sender, _value);
+        ContractObject memory newObject = ContractObject(
+            objectIdCounter,
+            msg.sender,
+            _value,
+            _cadastralNumber,
+            _legalStatus
+        );
         contractObjects.push(newObject);
         objectIdCounter++; // Increment the object ID counter.
     }
 
-    function createObject(uint256 _value) public {
+    function createObject(
+        uint256 _value,
+        string memory _cadastralNumber,
+        LegalStatus _legalStatus
+    ) public {
         // Create and add a new object to the array.
-        addObject(_value);
+        addObject(_value, _cadastralNumber, _legalStatus);
     }
 
     function getObjectCount() public view returns (uint256) {
@@ -34,11 +61,17 @@ contract Lands {
         return contractObjects.length;
     }
 
-    function getObject(uint256 index) public view returns (ContractObject memory) {
-        // Get the id, owner, and value of an object by index.
-        uint256 indexOfObject = findObjectIndex(index);
+    function getLegalStat() public pure returns (LegalStatus) {
+        return LegalStatus.LandsOfSettlements;
+    }
 
-        ContractObject memory object = contractObjects[indexOfObject];
+    function getObject(
+        uint256 index
+    ) public view returns (ContractObject memory) {
+        // Get the id, owner, area, and cadastral number of an object by index.
+        require(index < contractObjects.length, "Index out of bounds");
+
+        ContractObject memory object = contractObjects[index];
         return object;
     }
 
@@ -51,9 +84,14 @@ contract Lands {
         uint256 indexToDelete = findObjectIndex(objectId);
 
         require(indexToDelete != type(uint256).max, "Object not found");
-        require(contractObjects[indexToDelete].owner == msg.sender, "Caller is not the owner");
+        require(
+            contractObjects[indexToDelete].owner == msg.sender,
+            "Caller is not the owner"
+        );
 
-        contractObjects[indexToDelete] = contractObjects[contractObjects.length - 1];
+        contractObjects[indexToDelete] = contractObjects[
+            contractObjects.length - 1
+        ];
         contractObjects.pop();
     }
 
@@ -61,9 +99,12 @@ contract Lands {
         uint256 indexToEdit = findObjectIndex(objectId);
 
         require(indexToEdit != type(uint256).max, "Object not found");
-        require(contractObjects[indexToEdit].owner == msg.sender, "Caller is not the owner");
+        require(
+            contractObjects[indexToEdit].owner == msg.sender,
+            "Caller is not the owner"
+        );
 
-        contractObjects[indexToEdit].value = newValue;
+        contractObjects[indexToEdit].area = newValue;
     }
 
     function findObjectIndex(uint256 objectId) internal view returns (uint256) {
@@ -73,6 +114,6 @@ contract Lands {
             }
         }
 
-        return type(uint256).max; 
+        return type(uint256).max;
     }
 }
