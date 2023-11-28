@@ -1,5 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
-import { NoTokensMessage } from "../NoTokensMessage";
+import { NoTokensMessage } from "../token/NoTokensMessage";
 
 const Layout = ({ selectedAddress, balance, tokenData }) => {
   return (
