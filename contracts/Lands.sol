@@ -19,21 +19,23 @@ contract Lands {
         uint256 area;
         string cadastralNumber;
         LegalStatus legalStatus;
+        string companyName;
     }
 
     ContractObject[] public contractObjects;
     uint256 private objectIdCounter = 1; // Initialize the counter for object IDs.
 
     constructor() {
-        addObject(100, "Cadastral-100", LegalStatus.LandsOfSettlements);
-        addObject(200, "Cadastral-200", LegalStatus.LandForConstruction);
-        addObject(300, "Cadastral-300", LegalStatus.LandObjectsAndSpecialPurposes);
+        addObject(100, "Cadastral-100", LegalStatus.LandsOfSettlements, 'Conmapny 1');
+        addObject(200, "Cadastral-200", LegalStatus.LandForConstruction, 'Conmapny 2');
+        addObject(300, "Cadastral-300", LegalStatus.LandObjectsAndSpecialPurposes, 'Conmapny 3');
     }
 
     function addObject(
         uint256 _value,
         string memory _cadastralNumber,
-        LegalStatus _legalStatus
+        LegalStatus _legalStatus,
+        string memory _companyName
     ) private {
         // Create and add a new object to the array.
         ContractObject memory newObject = ContractObject(
@@ -41,7 +43,8 @@ contract Lands {
             msg.sender,
             _value,
             _cadastralNumber,
-            _legalStatus
+            _legalStatus,
+            _companyName
         );
         contractObjects.push(newObject);
         objectIdCounter++; // Increment the object ID counter.
@@ -50,10 +53,10 @@ contract Lands {
     function createObject(
         uint256 _value,
         string memory _cadastralNumber,
-        LegalStatus _legalStatus
+        LegalStatus _legalStatus,
+        string memory _companyName
     ) public {
-        // Create and add a new object to the array.
-        addObject(_value, _cadastralNumber, _legalStatus);
+        addObject(_value, _cadastralNumber, _legalStatus, _companyName);
     }
 
     function getObjectCount() public view returns (uint256) {
@@ -61,14 +64,9 @@ contract Lands {
         return contractObjects.length;
     }
 
-    function getLegalStat() public pure returns (LegalStatus) {
-        return LegalStatus.LandsOfSettlements;
-    }
-
     function getObject(
         uint256 index
     ) public view returns (ContractObject memory) {
-        // Get the id, owner, area, and cadastral number of an object by index.
         require(index < contractObjects.length, "Index out of bounds");
 
         ContractObject memory object = contractObjects[index];
@@ -76,7 +74,6 @@ contract Lands {
     }
 
     function getAllObjects() public view returns (ContractObject[] memory) {
-        // Return the array of objects directly.
         return contractObjects;
     }
 
@@ -95,7 +92,7 @@ contract Lands {
         contractObjects.pop();
     }
 
-    function editObject(uint256 objectId, uint256 newValue) public {
+    function editObject(uint256 objectId, uint256 area, string memory cadastralNumber, LegalStatus legalStatus, string memory companyName) public {
         uint256 indexToEdit = findObjectIndex(objectId);
 
         require(indexToEdit != type(uint256).max, "Object not found");
@@ -104,7 +101,10 @@ contract Lands {
             "Caller is not the owner"
         );
 
-        contractObjects[indexToEdit].area = newValue;
+        contractObjects[indexToEdit].area = area;
+        contractObjects[indexToEdit].cadastralNumber = cadastralNumber;
+        contractObjects[indexToEdit].legalStatus = legalStatus;
+        contractObjects[indexToEdit].companyName = companyName;
     }
 
     function findObjectIndex(uint256 objectId) internal view returns (uint256) {
