@@ -7,6 +7,7 @@ npx hardhat --version
 npm install
 
 cd frontend 
+mkdir contracts
 npm install
 
 
