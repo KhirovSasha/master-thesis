@@ -27,6 +27,15 @@ export function LandParameters({ parametersAt }) {
     return <h1>Data not found for {id}. 404 Error.</h1>;
   }
 
+  const handleDelete = async (id) => {
+    try {
+      const solidityNumber = ethers.BigNumber.from(id);
+      await parametersAt.deleteObject(solidityNumber);
+      fetchData();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+ };
   return (
     <div>
       {loadData ? (
@@ -57,6 +66,7 @@ export function LandParameters({ parametersAt }) {
                     </p>
                     <Link className="btn btn-info" to={`/land-parameters/${item.id}`}>Info</Link>
                     <Link className="btn btn-primary ml-3" to={`/edit-land/${item.id}`}>Edit Land</Link>
+                    <button className="btn btn-danger ml-3" onClick={() => handleDelete(item.id)}>Delete</button>
 
                    {/*selectedAddress.toLowerCase() !==
                     item.owner.toLowerCase() ? (
