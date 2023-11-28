@@ -6,8 +6,8 @@ import LandsArtifact from "../contracts/Lands.json";
 import LandParameterArtifact from "../contracts/LandParameters.json"
 import contractAddress from "../contracts/contract-address.json";
 
-import { NoWalletDetected } from "./NoWalletDetected";
-import { ConnectWallet } from "./ConnectWallet";
+import { NoWalletDetected } from "./token/NoWalletDetected";
+import { ConnectWallet } from "./token/ConnectWallet";
 import { Loading } from "./Loading";
 import { GetParameter } from "./GetParameter";
 import { CreateParameter } from "./CreateParameter";
