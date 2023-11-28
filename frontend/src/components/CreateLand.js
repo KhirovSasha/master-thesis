@@ -1,41 +1,90 @@
- import React, { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LandTypes, LandTypeLabels } from "../utils/enum";
+import { ethers } from "ethers";
 
 export function CreateLand({ par }) {
-  const [contractValue, setContractValue] = useState("");
-  const navigate = useNavigate(); // useNavigate replaces useHistory
+  const [formData, setFormData] = useState({
+    areaValue: 0,
+    cadastralNumberValue: "",
+    legalStatus: LandTypes.AGRICULTURAL,
+    companyName: "",
+  });
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-
-    // Now you can use the 'contractValue' state to access the form value
-    console.log("Contract Value:", contractValue);
+    event.preventDefault();
+    console.log("Contract Value:", formData.legalStatus);
     try {
-      await par.createObject(Number(contractValue));
+      const areaNumber = ethers.BigNumber.from(formData.areaValue);
+
+      await par.createObject(
+        areaNumber,
+        formData.cadastralNumberValue,
+        formData.legalStatus,
+        formData.companyName
+      );
       navigate("/");
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  const handleChange = (event) => {
-    // Update the 'contractValue' state when the input value changes
-    setContractValue(event.target.value);
+  const handleChange = (propertyName) => (event) => {
+    setFormData({
+      ...formData,
+      [propertyName]: event.target.value,
+    });
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="value" class="form-label">
-            Value of contract
+          <label htmlFor="value" className="form-label">
+            Area
           </label>
           <input
             type="number"
             className="form-control"
-            value={contractValue}
-            onChange={handleChange}
-          ></input>
+            value={formData.areaValue}
+            onChange={handleChange("areaValue")}
+          />
+          <label htmlFor="value" className="form-label">
+            Cadastral Number
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            value={formData.cadastralNumberValue}
+            onChange={handleChange("cadastralNumberValue")}
+          />
+          <label htmlFor="value" className="form-label">
+            Status
+          </label>
+          <br />
+          <select
+            className="form-select"
+            value={formData.legalStatus}
+            onChange={handleChange("legalStatus")}
+          >
+            {Object.entries(LandTypeLabels).map(([key, label]) => (
+              <option key={key} value={key}>
+                {label}
+              </option>
+            ))}
+          </select>
+          <br />
+          <label htmlFor="value" className="form-label">
+            Name of company
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            value={formData.companyName}
+            onChange={handleChange("companyName")}
+          />
         </div>
         <button type="submit" className="btn btn-primary">
           Submit

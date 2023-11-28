@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import mapLegalStatus from "../utils/mapEnumLands";
 
 export function GridLands({ par, selectedAddress}) {
   const [lands, setLands] = useState([]);
@@ -49,14 +50,15 @@ export function GridLands({ par, selectedAddress}) {
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
                     <h6 className="card-subtitle mb-2 text-body-secondary">
-                      Land ID: {parseInt(item.id, 10)}
+                      Land ID: {item.cadastralNumber}
                     </h6>
                     <ul className="list-group list-group-flush">
                       <li className="list-group-item">Owner: {item.owner}</li>
                       <li className="list-group-item">
-                        Number: {parseInt(item.value, 10)}
+                        Area: {parseInt(item.area, 10)}
                       </li>
-                      <li className="list-group-item">A third item</li>
+                      <li className="list-group-item">Company: {item.companyName}</li>
+                      <li className="list-group-item">Status: {mapLegalStatus(item.legalStatus)}</li>
                     </ul>
                     <p className="card-text">
                       Some quick example text to build on the card title and
