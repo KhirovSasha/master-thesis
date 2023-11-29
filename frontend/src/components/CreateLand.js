@@ -9,6 +9,7 @@ export function CreateLand({ par }) {
     cadastralNumberValue: "",
     legalStatus: LandTypes.AGRICULTURAL,
     companyName: "",
+    title: ""
   });
 
   const navigate = useNavigate();
@@ -23,7 +24,8 @@ export function CreateLand({ par }) {
         areaNumber,
         formData.cadastralNumberValue,
         formData.legalStatus,
-        formData.companyName
+        formData.companyName,
+        formData.title
       );
       navigate("/");
     } catch (error) {
@@ -84,6 +86,15 @@ export function CreateLand({ par }) {
             className="form-control"
             value={formData.companyName}
             onChange={handleChange("companyName")}
+          />
+          <label htmlFor="value" className="form-label">
+            Title of land
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            value={formData.title}
+            onChange={handleChange("title")}
           />
         </div>
         <button type="submit" className="btn btn-primary">
