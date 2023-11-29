@@ -20,47 +20,50 @@ contract Lands {
         string cadastralNumber;
         LegalStatus legalStatus;
         string companyName;
+        string title;
     }
 
     ContractObject[] public contractObjects;
     uint256 private objectIdCounter = 1; // Initialize the counter for object IDs.
 
     constructor() {
-        addObject(100, "Cadastral-100", LegalStatus.LandsOfSettlements, 'Conmapny 1');
-        addObject(200, "Cadastral-200", LegalStatus.LandForConstruction, 'Conmapny 2');
-        addObject(300, "Cadastral-300", LegalStatus.LandObjectsAndSpecialPurposes, 'Conmapny 3');
+        addObject(100, "Cadastral-100", LegalStatus.LandsOfSettlements, 'Conmapny 1', 'Title 1');
+        addObject(200, "Cadastral-200", LegalStatus.LandForConstruction, 'Conmapny 2', 'Title 2');
+        addObject(300, "Cadastral-300", LegalStatus.LandObjectsAndSpecialPurposes, 'Conmapny 3', 'Title 3');
     }
 
     function addObject(
-        uint256 _value,
+        uint256 _area,
         string memory _cadastralNumber,
         LegalStatus _legalStatus,
-        string memory _companyName
+        string memory _companyName,
+        string memory _title
     ) private {
         // Create and add a new object to the array.
         ContractObject memory newObject = ContractObject(
             objectIdCounter,
             msg.sender,
-            _value,
+            _area,
             _cadastralNumber,
             _legalStatus,
-            _companyName
+            _companyName,
+            _title
         );
         contractObjects.push(newObject);
         objectIdCounter++; // Increment the object ID counter.
     }
 
     function createObject(
-        uint256 _value,
+        uint256 _area,
         string memory _cadastralNumber,
         LegalStatus _legalStatus,
-        string memory _companyName
+        string memory _companyName,
+        string memory _title
     ) public {
-        addObject(_value, _cadastralNumber, _legalStatus, _companyName);
+        addObject(_area, _cadastralNumber, _legalStatus, _companyName, _title);
     }
 
     function getObjectCount() public view returns (uint256) {
-        // Get the count of saved objects.
         return contractObjects.length;
     }
 
@@ -92,7 +95,7 @@ contract Lands {
         contractObjects.pop();
     }
 
-    function editObject(uint256 objectId, uint256 area, string memory cadastralNumber, LegalStatus legalStatus, string memory companyName) public {
+    function editObject(uint256 objectId, uint256 area, string memory cadastralNumber, LegalStatus legalStatus, string memory companyName, string memory title) public {
         uint256 indexToEdit = findObjectIndex(objectId);
 
         require(indexToEdit != type(uint256).max, "Object not found");
@@ -105,6 +108,7 @@ contract Lands {
         contractObjects[indexToEdit].cadastralNumber = cadastralNumber;
         contractObjects[indexToEdit].legalStatus = legalStatus;
         contractObjects[indexToEdit].companyName = companyName;
+        contractObjects[indexToEdit].title = title;
     }
 
     function findObjectIndex(uint256 objectId) internal view returns (uint256) {
