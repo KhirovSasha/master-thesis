@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LandTypes, LandTypeLabels } from "../utils/enum";
+import { LandTypes, LandTypeLabels } from "../../utils/enum";
 import { ethers } from "ethers";
 
 export function CreateLand({ par }) {

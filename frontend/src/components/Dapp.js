@@ -9,15 +9,15 @@ import contractAddress from "../contracts/contract-address.json";
 import { NoWalletDetected } from "./token/NoWalletDetected";
 import { ConnectWallet } from "./token/ConnectWallet";
 import { Loading } from "./Loading";
-import { GetParameter } from "./GetParameter";
-import { CreateParameter } from "./CreateParameter";
+import { GetParameter } from "./parameters/GetParameter";
+import { CreateParameter } from "./parameters/CreateParameter";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
 import NoPage from "./pages/NoPage";
-import { CreateLand } from "./CreateLand";
-import EditLand from "./EditLand";
-import LandParameters from "./LandParameters";
+import { CreateLand } from "./lands/CreateLand";
+import EditLand from "./lands/EditLand";
+import LandParameters from "./parameters/LandParameters";
 
 const HARDHAT_NETWORK_ID = "31337";
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import mapLegalStatus from "../utils/mapEnumLands";
+import mapLegalStatus from "../../utils/mapEnumLands";
 
 export function GridLands({ par, selectedAddress}) {
   const [lands, setLands] = useState([]);

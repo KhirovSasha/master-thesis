@@ -7,7 +7,7 @@ function EditLand({ par }) {
   const [landData, setLandData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [contractValue, setContractValue] = useState(0);
-  const navigate = useNavigate(); // useNavigate replaces useHistory
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchData = async () => {
