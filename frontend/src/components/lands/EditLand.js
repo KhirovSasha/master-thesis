@@ -57,7 +57,7 @@ function EditLand({ par }) {
       return <div className="loading-message">Loading...</div>;
     }
 
-    if (!par || !area) {
+    if (!par || (!area && !cadastralNumber && !legalStatus && !companyName && !title)) {
       return (
         <div className="alert alert-warning" role="alert">
           Land data not found.
