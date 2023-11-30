@@ -65,7 +65,7 @@ export function LandParameters({ parametersAt }) {
                       make up the bulk of the card's content.
                     </p>
                     <Link className="btn btn-info" to={`/land-parameters/${item.id}`}>Info</Link>
-                    <Link className="btn btn-primary ml-3" to={`/edit-land/${item.id}`}>Edit Land</Link>
+                    <Link className="btn btn-primary ml-3" to={`/land-parameter/edit/${item.id}`}>Edit Parameter</Link>
                     <button className="btn btn-danger ml-3" onClick={() => handleDelete(item.id)}>Delete</button>
 
                    {/*selectedAddress.toLowerCase() !==

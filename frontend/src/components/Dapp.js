@@ -9,7 +9,7 @@ import contractAddress from "../contracts/contract-address.json";
 import { NoWalletDetected } from "./token/NoWalletDetected";
 import { ConnectWallet } from "./token/ConnectWallet";
 import { Loading } from "./Loading";
-import { GetParameter } from "./parameters/GetParameter";
+import { GetParameter } from "./GetParameter";
 import { CreateParameter } from "./parameters/CreateParameter";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -18,6 +18,7 @@ import NoPage from "./pages/NoPage";
 import { CreateLand } from "./lands/CreateLand";
 import EditLand from "./lands/EditLand";
 import LandParameters from "./parameters/LandParameters";
+import EditParameter from "./parameters/EditParamater";
 
 const HARDHAT_NETWORK_ID = "31337";
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
@@ -80,6 +81,7 @@ export class Dapp extends React.Component {
               <Route path="edit-land/:id" element={<EditLand par={this._tokenSecond} />}/>
               <Route path="land-parameters/:id" element={<LandParameters parametersAt={this._LandParametersToken} />}/>
               <Route path="land/:id/create-parameter" element={<CreateParameter parametersAt={this._LandParametersToken}/>} />
+              <Route path="land-parameter/edit/:id" element={<EditParameter parametersAt={this._LandParametersToken}/>}/>
             </Route>
           </Routes>
         </BrowserRouter>
