@@ -27,9 +27,27 @@ contract Lands {
     uint256 private objectIdCounter = 1; // Initialize the counter for object IDs.
 
     constructor() {
-        addObject(100, "Cadastral-100", LegalStatus.LandsOfSettlements, 'Conmapny 1', 'Title 1');
-        addObject(200, "Cadastral-200", LegalStatus.LandForConstruction, 'Conmapny 2', 'Title 2');
-        addObject(300, "Cadastral-300", LegalStatus.LandObjectsAndSpecialPurposes, 'Conmapny 3', 'Title 3');
+        addObject(
+            100,
+            "Cadastral-100",
+            LegalStatus.LandsOfSettlements,
+            "Conmapny 1",
+            "Title 1"
+        );
+        addObject(
+            200,
+            "Cadastral-200",
+            LegalStatus.LandForConstruction,
+            "Conmapny 2",
+            "Title 2"
+        );
+        addObject(
+            300,
+            "Cadastral-300",
+            LegalStatus.LandObjectsAndSpecialPurposes,
+            "Conmapny 3",
+            "Title 3"
+        );
     }
 
     function addObject(
@@ -68,12 +86,15 @@ contract Lands {
     }
 
     function getObject(
-        uint256 index
+        uint256 _id
     ) public view returns (ContractObject memory) {
-        require(index < contractObjects.length, "Index out of bounds");
+        for (uint256 i = 0; i < contractObjects.length; i++) {
+            if (contractObjects[i].id == _id) {
+                return contractObjects[i];
+            }
+        }
 
-        ContractObject memory object = contractObjects[index];
-        return object;
+        revert("Object not found");
     }
 
     function getAllObjects() public view returns (ContractObject[] memory) {
@@ -95,7 +116,14 @@ contract Lands {
         contractObjects.pop();
     }
 
-    function editObject(uint256 objectId, uint256 area, string memory cadastralNumber, LegalStatus legalStatus, string memory companyName, string memory title) public {
+    function editObject(
+        uint256 objectId,
+        uint256 area,
+        string memory cadastralNumber,
+        LegalStatus legalStatus,
+        string memory companyName,
+        string memory title
+    ) public {
         uint256 indexToEdit = findObjectIndex(objectId);
 
         require(indexToEdit != type(uint256).max, "Object not found");
