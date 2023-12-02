@@ -28,25 +28,39 @@ contract Lands {
 
     constructor() {
         addObject(
-            100,
-            "Cadastral-100",
+            150,
+            "1210100000:03:176:0029",
             LegalStatus.LandsOfSettlements,
             "Conmapny 1",
             "Title 1"
         );
         addObject(
             200,
-            "Cadastral-200",
+            "4820300000:08:245:0097",
             LegalStatus.LandForConstruction,
             "Conmapny 2",
             "Title 2"
         );
         addObject(
             300,
-            "Cadastral-300",
+            "6500800000:11:123:0145",
             LegalStatus.LandObjectsAndSpecialPurposes,
             "Conmapny 3",
             "Title 3"
+        );
+        addObject(
+            300,
+            "2910400000:05:311:0072",
+            LegalStatus.LandObjectsAndSpecialPurposes,
+            "Conmapny 4",
+            "Title 4"
+        );
+        addObject(
+            300,
+            "8300100000:02:189:0013",
+            LegalStatus.LandObjectsAndSpecialPurposes,
+            "Conmapny 5",
+            "Title 5"
         );
     }
 
@@ -57,7 +71,6 @@ contract Lands {
         string memory _companyName,
         string memory _title
     ) private {
-        // Create and add a new object to the array.
         ContractObject memory newObject = ContractObject(
             objectIdCounter,
             msg.sender,
