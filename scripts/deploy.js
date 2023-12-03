@@ -1,4 +1,6 @@
 const path = require("path");
+const fs = require("fs");
+const Papa = require('papaparse');
 
 async function main() {
   if (network.name === "hardhat") {
@@ -32,9 +34,70 @@ async function main() {
     },
     // In this place add more contracts as needed
   ];
+
+  const csvData = fs.readFileSync("./data.csv", "utf8");
+  //const rows = csvData.split("\n");
+
+  const parsedData = Papa.parse(csvData, {
+    header: false, // Set to true if the first row contains headers
+    skipEmptyLines: true,
+  });
   
+  // Access rows using parsedData.data
+  const rows = parsedData.data;
+  
+
+  const landId = [];
+  const description = [];
+  const pHLevel = [];
+  const organicMatter = [];
+  const nitrogenContent = [];
+  const phosphorusContent = [];
+  const potassiumContent = [];
+  const area = [];
+
+  for (let i = 1; i < rows.length; i++) {
+    const rowData = rows[i];
+
+    const [
+      _landId,
+      _description,
+      _pHLevel,
+      _organicMatter,
+      _nitrogenContent,
+      _phosphorusContent,
+      _potassiumContent,
+      _area,
+    ] = rowData.map((item) => item.trim());
+
+    landId.push(parseInt(_landId));
+    description.push(_description);
+    pHLevel.push(parseInt(_pHLevel));
+    organicMatter.push(parseInt(_organicMatter));
+    nitrogenContent.push(parseInt(_nitrogenContent));
+    phosphorusContent.push(parseInt(_phosphorusContent));
+    potassiumContent.push(parseInt(_potassiumContent));
+    area.push(parseInt(_area));
+  }
+
+    console.log(landId)
+    console.log(description)
+    console.log(pHLevel)
+    console.log(organicMatter)
+    console.log(nitrogenContent)
+    console.log(phosphorusContent)
+    console.log(potassiumContent)
+    console.log(area)
+
+
   for (const contract of contractsToDeploy) {
-    const instance = await contract.factory.deploy();
+    let instance;
+    if (contract.name == "LandParameters") {
+      instance = await contract.factory.deploy(landId, description, pHLevel, organicMatter, nitrogenContent, phosphorusContent, potassiumContent, area);
+    } else {
+      instance = await contract.factory.deploy();
+    }
+
     await instance.deployed();
 
     console.log(`${contract.name} address:`, instance.address);
@@ -46,7 +109,13 @@ async function main() {
 
 function saveFrontendFiles(contractName, contractInstance) {
   const fs = require("fs");
-  const contractsDir = path.join(__dirname, "..", "frontend", "src", "contracts");
+  const contractsDir = path.join(
+    __dirname,
+    "..",
+    "frontend",
+    "src",
+    "contracts"
+  );
   const filePath = path.join(contractsDir, "contract-address.json");
 
   let data = {};
@@ -69,8 +138,6 @@ function saveFrontendFiles(contractName, contractInstance) {
     JSON.stringify(contractArtifact, null, 2)
   );
 }
-
-
 
 main()
   .then(() => process.exit(0))

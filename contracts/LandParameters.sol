@@ -20,6 +20,41 @@ contract LandParameters {
     LandArray[] public landConnections;
     uint256 private objectIdCounter = 1;
 
+    constructor(
+        uint[] memory _landId,
+        string[] memory _description,
+        uint[] memory _pHLevel,
+        uint[] memory _organicMatter,
+        uint[] memory _nitrogenContent,
+        uint[] memory _phosphorusContent,
+        uint[] memory _potassiumContent,
+        uint[] memory _area
+    ) {
+        require(
+            _landId.length == _description.length &&
+                _description.length == _pHLevel.length &&
+                _pHLevel.length == _organicMatter.length &&
+                _organicMatter.length == _nitrogenContent.length &&
+                _nitrogenContent.length == _phosphorusContent.length &&
+                _phosphorusContent.length == _potassiumContent.length &&
+                _potassiumContent.length == _area.length,
+            "Array lengths mismatch"
+        );
+
+        for (uint256 i = 0; i < _landId.length; i++) {
+            addObject(
+                _landId[i],
+                _description[i],
+                _pHLevel[i],
+                _organicMatter[i],
+                _nitrogenContent[i],
+                _phosphorusContent[i],
+                _potassiumContent[i],
+                _area[i]
+            );
+        }
+    }
+
     function createParameter(
         uint256 _landId,
         string memory _description,
@@ -33,7 +68,6 @@ contract LandParameters {
         addObject(
             _landId,
             _description,
-            block.timestamp,
             _pHLevel,
             _organicMatter,
             _nitrogenContent,
@@ -46,7 +80,6 @@ contract LandParameters {
     function addObject(
         uint256 _landId,
         string memory _description,
-        uint256 _timestamp,
         uint256 _pHLevel,
         uint256 _organicMatter,
         uint256 _nitrogenContent,
@@ -57,7 +90,7 @@ contract LandParameters {
         LandArray memory newObject = LandArray(
             objectIdCounter,
             _landId,
-            _timestamp,
+            block.timestamp,
             _description,
             msg.sender, // assuming you want to set the owner as the function caller
             _pHLevel,
@@ -148,5 +181,9 @@ contract LandParameters {
         }
 
         return filteredObjects;
+    }
+
+     function getAllObjects() public view returns (LandArray[] memory) {
+        return landConnections;
     }
 }
