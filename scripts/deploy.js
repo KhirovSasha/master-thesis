@@ -72,22 +72,13 @@ async function main() {
 
     landId.push(parseInt(_landId));
     description.push(_description);
-    pHLevel.push(parseInt(_pHLevel));
-    organicMatter.push(parseInt(_organicMatter));
-    nitrogenContent.push(parseInt(_nitrogenContent));
-    phosphorusContent.push(parseInt(_phosphorusContent));
-    potassiumContent.push(parseInt(_potassiumContent));
-    area.push(parseInt(_area));
+    pHLevel.push(_pHLevel);
+    organicMatter.push(_organicMatter);
+    nitrogenContent.push(_nitrogenContent);
+    phosphorusContent.push(_phosphorusContent);
+    potassiumContent.push(_potassiumContent);
+    area.push(_area);
   }
-
-    console.log(landId)
-    console.log(description)
-    console.log(pHLevel)
-    console.log(organicMatter)
-    console.log(nitrogenContent)
-    console.log(phosphorusContent)
-    console.log(potassiumContent)
-    console.log(area)
 
 
   for (const contract of contractsToDeploy) {

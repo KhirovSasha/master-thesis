@@ -9,12 +9,12 @@ contract LandParameters {
         string description;
         address owner;
         // New fields
-        uint256 pHLevel;
-        uint256 organicMatter;
-        uint256 nitrogenContent;
-        uint256 phosphorusContent;
-        uint256 potassiumContent;
-        uint256 area;
+        string pHLevel;
+        string organicMatter;
+        string nitrogenContent;
+        string phosphorusContent;
+        string potassiumContent;
+        string area;
     }
 
     LandArray[] public landConnections;
@@ -23,12 +23,12 @@ contract LandParameters {
     constructor(
         uint[] memory _landId,
         string[] memory _description,
-        uint[] memory _pHLevel,
-        uint[] memory _organicMatter,
-        uint[] memory _nitrogenContent,
-        uint[] memory _phosphorusContent,
-        uint[] memory _potassiumContent,
-        uint[] memory _area
+        string[] memory _pHLevel,
+        string[] memory _organicMatter,
+        string[] memory _nitrogenContent,
+        string[] memory _phosphorusContent,
+        string[] memory _potassiumContent,
+        string[] memory _area
     ) {
         require(
             _landId.length == _description.length &&
@@ -58,12 +58,12 @@ contract LandParameters {
     function createParameter(
         uint256 _landId,
         string memory _description,
-        uint256 _pHLevel,
-        uint256 _organicMatter,
-        uint256 _nitrogenContent,
-        uint256 _phosphorusContent,
-        uint256 _potassiumContent,
-        uint256 _area
+        string memory _pHLevel,
+        string memory _organicMatter,
+        string memory _nitrogenContent,
+        string memory _phosphorusContent,
+        string memory _potassiumContent,
+        string memory _area
     ) public {
         addObject(
             _landId,
@@ -80,12 +80,12 @@ contract LandParameters {
     function addObject(
         uint256 _landId,
         string memory _description,
-        uint256 _pHLevel,
-        uint256 _organicMatter,
-        uint256 _nitrogenContent,
-        uint256 _phosphorusContent,
-        uint256 _potassiumContent,
-        uint256 _area
+        string memory _pHLevel,
+        string memory _organicMatter,
+        string memory _nitrogenContent,
+        string memory _phosphorusContent,
+        string memory _potassiumContent,
+        string memory _area
     ) private {
         LandArray memory newObject = LandArray(
             objectIdCounter,
@@ -107,12 +107,12 @@ contract LandParameters {
     function editObject(
         uint256 _id,
         string memory _description,
-        uint256 _pHLevel,
-        uint256 _organicMatter,
-        uint256 _nitrogenContent,
-        uint256 _phosphorusContent,
-        uint256 _potassiumContent,
-        uint256 _area
+        string memory _pHLevel,
+        string memory _organicMatter,
+        string memory _nitrogenContent,
+        string memory _phosphorusContent,
+        string memory _potassiumContent,
+        string memory _area
     ) public {
         for (uint256 i = 0; i < landConnections.length; i++) {
             if (landConnections[i].id == _id) {
