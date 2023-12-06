@@ -23,43 +23,43 @@ contract Lands {
         string title;
     }
 
-    ContractObject[] public contractObjects;
-    uint256 private objectIdCounter = 1; // Initialize the counter for object IDs.
+    mapping(uint256 => ContractObject) public contractObjects;
+    uint256 private objectIdCounter = 1;
 
     constructor() {
         addObject(
             150,
             "1210100000:03:176:0029",
             LegalStatus.LandsOfSettlements,
-            "Conmapny 1",
+            "Company 1",
             "Title 1"
         );
         addObject(
             200,
             "4820300000:08:245:0097",
             LegalStatus.LandForConstruction,
-            "Conmapny 2",
+            "Company 2",
             "Title 2"
         );
         addObject(
             300,
             "6500800000:11:123:0145",
-            LegalStatus.LandObjectsAndSpecialPurposes,
-            "Conmapny 3",
+            LegalStatus.AgriculturalLands,
+            "Company 3",
             "Title 3"
         );
         addObject(
             300,
             "2910400000:05:311:0072",
-            LegalStatus.LandObjectsAndSpecialPurposes,
-            "Conmapny 4",
+            LegalStatus.IndustrialAndCommercialLands,
+            "Company 4",
             "Title 4"
         );
         addObject(
             300,
             "8300100000:02:189:0013",
             LegalStatus.LandObjectsAndSpecialPurposes,
-            "Conmapny 5",
+            "Company 5",
             "Title 5"
         );
     }
@@ -80,8 +80,8 @@ contract Lands {
             _companyName,
             _title
         );
-        contractObjects.push(newObject);
-        objectIdCounter++; // Increment the object ID counter.
+        contractObjects[objectIdCounter] = (newObject);
+        objectIdCounter++;
     }
 
     function createObject(
@@ -95,38 +95,27 @@ contract Lands {
     }
 
     function getObjectCount() public view returns (uint256) {
-        return contractObjects.length;
+        return objectIdCounter - 1;
     }
 
     function getObject(
         uint256 _id
     ) public view returns (ContractObject memory) {
-        for (uint256 i = 0; i < contractObjects.length; i++) {
-            if (contractObjects[i].id == _id) {
-                return contractObjects[i];
-            }
-        }
-
-        revert("Object not found");
+        return contractObjects[_id];
     }
 
     function getAllObjects() public view returns (ContractObject[] memory) {
-        return contractObjects;
+        ContractObject[] memory allObjects = new ContractObject[](
+            objectIdCounter - 1
+        );
+        for (uint256 i = 1; i < objectIdCounter; i++) {
+            allObjects[i - 1] = contractObjects[i];
+        }
+        return allObjects;
     }
 
     function deleteObject(uint256 objectId) public {
-        uint256 indexToDelete = findObjectIndex(objectId);
-
-        require(indexToDelete != type(uint256).max, "Object not found");
-        require(
-            contractObjects[indexToDelete].owner == msg.sender,
-            "Caller is not the owner"
-        );
-
-        contractObjects[indexToDelete] = contractObjects[
-            contractObjects.length - 1
-        ];
-        contractObjects.pop();
+        delete contractObjects[objectId];
     }
 
     function editObject(
@@ -137,28 +126,19 @@ contract Lands {
         string memory companyName,
         string memory title
     ) public {
-        uint256 indexToEdit = findObjectIndex(objectId);
+        require(!hasItem(objectId), "Object not found");
 
-        require(indexToEdit != type(uint256).max, "Object not found");
-        require(
-            contractObjects[indexToEdit].owner == msg.sender,
-            "Caller is not the owner"
-        );
+        ContractObject storage obj = contractObjects[objectId];
+        require(obj.owner == msg.sender, "Caller is not the owner");
 
-        contractObjects[indexToEdit].area = area;
-        contractObjects[indexToEdit].cadastralNumber = cadastralNumber;
-        contractObjects[indexToEdit].legalStatus = legalStatus;
-        contractObjects[indexToEdit].companyName = companyName;
-        contractObjects[indexToEdit].title = title;
+        obj.area = area;
+        obj.cadastralNumber = cadastralNumber;
+        obj.legalStatus = legalStatus;
+        obj.companyName = companyName;
+        obj.title = title;
     }
 
-    function findObjectIndex(uint256 objectId) internal view returns (uint256) {
-        for (uint256 i = 0; i < contractObjects.length; i++) {
-            if (contractObjects[i].id == objectId) {
-                return i;
-            }
-        }
-
-        return type(uint256).max;
+    function hasItem(uint256 _id) private view returns (bool) {
+        return contractObjects[_id].id != 0;
     }
 }
