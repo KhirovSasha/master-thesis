@@ -60,10 +60,6 @@ export function GridLands({ par, selectedAddress}) {
                       <li className="list-group-item">Company: {item.companyName}</li>
                       <li className="list-group-item">Status: {mapLegalStatus(item.legalStatus)}</li>
                     </ul>
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
                     <Link className="btn btn-info" to={`/land-parameters/${item.id}`}>Info</Link>
                     <Link className="btn btn-primary ml-3" to={`/edit-land/${item.id}`}>Edit Land</Link>
 

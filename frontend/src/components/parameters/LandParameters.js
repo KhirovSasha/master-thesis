@@ -58,14 +58,16 @@ export function LandParameters({ parametersAt }) {
                     <h6 className="card-subtitle mb-2 text-body-secondary">
                       Time: {formatUnixTimestamp(item.dateTime)}
                     </h6>
+                    <h6>Owner: {item.owner}</h6>
                     <ul className="list-group list-group-flush">
-                      <li className="list-group-item">Owner: {item.owner}</li>
-                      <li className="list-group-item">Number: {item.info}</li>
-                      <li className="list-group-item">A third item</li>
+                      <li className="list-group-item">Nitrogen: {item.nitrogenContent}</li>
+                      <li className="list-group-item">PH Level: {item.pHLevel}</li>
+                      <li className="list-group-item">Organic Matter: {item.organicMatter}</li>
+                      <li className="list-group-item">Phosphorus: {item.phosphorusContent}</li>
+                      <li className="list-group-item">Potassium: {item.potassiumContent}</li>
                     </ul>
                     <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
+                      {item.description}
                     </p>
                     <Link
                       className="btn btn-info"
