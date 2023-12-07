@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import formatUnixTimestamp from '../../utils/mapDateTime'
 
 export function LandParameters({ parametersAt }) {
   const [loadData, setLoadData] = useState(false);
@@ -35,13 +36,17 @@ export function LandParameters({ parametersAt }) {
     } catch (error) {
       console.error("Error:", error);
     }
- };
+  };
+
   return (
     <div>
       {loadData ? (
         <div className="container">
           <h1>Hi {id}</h1>
-          <Link className="btn btn-success" to={`/land/${id}/create-parameter`}>
+          <Link
+            className="btn btn-success mb-3"
+            to={`/land/${id}/create-parameter`}
+          >
             Add Parameter
           </Link>
           <div className="row row-cols-3">
@@ -51,24 +56,37 @@ export function LandParameters({ parametersAt }) {
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
                     <h6 className="card-subtitle mb-2 text-body-secondary">
-                      Land ID: {parseInt(item.id, 10)}
+                      Time: {formatUnixTimestamp(item.dateTime)}
                     </h6>
                     <ul className="list-group list-group-flush">
                       <li className="list-group-item">Owner: {item.owner}</li>
-                      <li className="list-group-item">
-                        Number: {item.info}
-                      </li>
+                      <li className="list-group-item">Number: {item.info}</li>
                       <li className="list-group-item">A third item</li>
                     </ul>
                     <p className="card-text">
                       Some quick example text to build on the card title and
                       make up the bulk of the card's content.
                     </p>
-                    <Link className="btn btn-info" to={`/land-parameters/${item.id}`}>Info</Link>
-                    <Link className="btn btn-primary ml-3" to={`/land-parameter/edit/${item.id}`}>Edit Parameter</Link>
-                    <button className="btn btn-danger ml-3" onClick={() => handleDelete(item.id)}>Delete</button>
+                    <Link
+                      className="btn btn-info"
+                      to={`/land-parameters/${item.id}`}
+                    >
+                      Info
+                    </Link>
+                    <Link
+                      className="btn btn-primary ml-3"
+                      to={`/land-parameter/edit/${item.id}`}
+                    >
+                      Edit Parameter
+                    </Link>
+                    <button
+                      className="btn btn-danger ml-3"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      Delete
+                    </button>
 
-                   {/*selectedAddress.toLowerCase() !==
+                    {/*selectedAddress.toLowerCase() !==
                     item.owner.toLowerCase() ? (
                       <button
                         type="button"
@@ -95,7 +113,7 @@ export function LandParameters({ parametersAt }) {
       ) : (
         <div className="loading-message">Loading...</div>
       )}
-    </div>       
+    </div>
   );
 }
 
