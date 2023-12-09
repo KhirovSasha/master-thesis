@@ -5,6 +5,7 @@ import { LandTypes, LandTypeLabels } from "../../utils/enum";
 
 function EditLand({ par }) {
   const { id } = useParams();
+  const [isOwner, setIsOwner] = useState(false);
  
   const [area, setArea] = useState(null);
   const [cadastralNumber, setCadastralNumber] = useState(0);
@@ -21,6 +22,7 @@ function EditLand({ par }) {
         const solidityNumber = ethers.BigNumber.from(id);
         const land = await par.getObject(solidityNumber);
 
+        setIsOwner(land.owner === par.account);
         setArea(land.area);
         setCadastralNumber(land.cadastralNumber);
         setLegalStatus(land.legalStatus);
@@ -61,6 +63,14 @@ function EditLand({ par }) {
       return (
         <div className="alert alert-warning" role="alert">
           Land data not found.
+        </div>
+      );
+    }
+
+    if (!isOwner) {
+      return (
+        <div className="alert alert-danger" role="alert">
+          You are not the owner. You cannot edit this land.
         </div>
       );
     }

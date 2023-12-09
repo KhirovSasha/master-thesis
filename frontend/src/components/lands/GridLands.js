@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import mapLegalStatus from "../../utils/mapEnumLands";
 
-export function GridLands({ par, selectedAddress}) {
+export function GridLands({ par, selectedAddress }) {
   const [lands, setLands] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -12,7 +12,7 @@ export function GridLands({ par, selectedAddress}) {
         const arrayLends = await par.getAllObjects();
 
         setLands(arrayLends);
-        setIsLoading(false); 
+        setIsLoading(false);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -57,29 +57,64 @@ export function GridLands({ par, selectedAddress}) {
                       <li className="list-group-item">
                         Area: {parseInt(item.area, 10)}
                       </li>
-                      <li className="list-group-item">Company: {item.companyName}</li>
-                      <li className="list-group-item">Status: {mapLegalStatus(item.legalStatus)}</li>
+                      <li className="list-group-item">
+                        Company: {item.companyName}
+                      </li>
+                      <li className="list-group-item">
+                        Status: {mapLegalStatus(item.legalStatus)}
+                      </li>
                     </ul>
-                    <Link className="btn btn-info" to={`/land-parameters/${item.id}`}>Info</Link>
-                    <Link className="btn btn-primary ml-3" to={`/edit-land/${item.id}`}>Edit Land</Link>
 
                     {selectedAddress.toLowerCase() !==
                     item.owner.toLowerCase() ? (
-                      <button
-                        type="button"
-                        onClick={() => alert("You are not owner of this Land")}
-                        class="btn btn-warning ml-3"
-                      >
-                        Delete
-                      </button>
+                      <div>
+                        <Link
+                          className="btn btn-info"
+                          to={`/land-parameters/${item.id}`}
+                        >
+                          Info
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            alert("You are not owner of this Land")
+                          }
+                          class="btn btn-warning ml-3"
+                        >
+                          Edit Land
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            alert("You are not owner of this Land")
+                          }
+                          class="btn btn-warning ml-3"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     ) : (
-                      <button
-                        type="button"
-                        className="btn btn-danger ml-3"
-                        onClick={() => handleDelete(item.id)}
-                      >
-                        Delete
-                      </button>
+                      <div>
+                        <Link
+                          className="btn btn-info"
+                          to={`/land-parameters/${item.id}`}
+                        >
+                          Info
+                        </Link>
+                        <Link
+                          className="btn btn-primary ml-3"
+                          to={`/edit-land/${item.id}`}
+                        >
+                          Edit Land
+                        </Link>
+                        <button
+                          type="button"
+                          className="btn btn-danger ml-3"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
