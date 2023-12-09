@@ -114,7 +114,7 @@ contract LandParameters {
         string memory _potassiumContent,
         string memory _area
     ) public {
-        require(!hasItem(_id), "Invalid object ID");
+        require(hasItem(_id), "Invalid object ID");
 
         LandArray storage landObject = landConnections[_id];
         require(landObject.owner == msg.sender, "Caller is not the owner");

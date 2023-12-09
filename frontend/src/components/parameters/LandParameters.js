@@ -49,7 +49,7 @@ export function LandParameters({ parametersAt }) {
           >
             Add Parameter
           </Link>
-          <div className="row row-cols-3">
+          <div className="row row-cols-1">
             {arrayParameters.map((item) => (
               <div className="col mb-4">
                 <div className="card" key={item.id}>
@@ -70,14 +70,8 @@ export function LandParameters({ parametersAt }) {
                       {item.description}
                     </p>
                     <Link
-                      className="btn btn-info"
-                      to={`/land-parameters/${item.id}`}
-                    >
-                      Info
-                    </Link>
-                    <Link
                       className="btn btn-primary ml-3"
-                      to={`/land-parameter/edit/${item.id}`}
+                      to={`/land-parameter/edit/${Number(item.id)}`}
                     >
                       Edit Parameter
                     </Link>
