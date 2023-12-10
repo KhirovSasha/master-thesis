@@ -16,7 +16,7 @@ contract LandParameters {
         string potassiumContent;
     }
 
-    mapping(uint256 => LandArray) public landConnections;
+    LandArray[] public landConnections;
     uint256 private objectIdCounter = 1;
 
     constructor(
@@ -100,7 +100,7 @@ contract LandParameters {
             _potassiumContent
         );
 
-        landConnections[objectIdCounter] = newObject;
+        landConnections.push(newObject);
         objectIdCounter++;
     }
 
@@ -116,7 +116,7 @@ contract LandParameters {
     ) public {
         require(hasItem(_id), "Invalid object ID");
 
-        LandArray storage landObject = landConnections[_id];
+        LandArray storage landObject = landConnections[_id - 1];
         require(landObject.owner == msg.sender, "Caller is not the owner");
 
         landObject.title = _title;
@@ -132,14 +132,15 @@ contract LandParameters {
     function deleteObject(uint256 _id) public {
         require(hasItem(_id), "Invalid object ID");
 
-        LandArray storage landObject = landConnections[_id];
+        LandArray storage landObject = landConnections[_id - 1];
         require(landObject.owner == msg.sender, "Caller is not the owner");
 
-        delete landConnections[_id];
+        delete landConnections[_id - 1];
     }
 
     function getObjectById(uint256 _id) public view returns (LandArray memory) {
-        return landConnections[_id];
+        require(_id <= objectIdCounter, "Object not found");
+        return landConnections[_id - 1];
     }
 
     function getConnectionCount() public view returns (uint256) {
@@ -149,12 +150,10 @@ contract LandParameters {
     function getAllObjectsByLandId(
         uint256 _landId
     ) public view returns (LandArray[] memory) {
-        LandArray[] memory filteredObjects = new LandArray[](
-            objectIdCounter - 1
-        );
+        LandArray[] memory filteredObjects = new LandArray[](objectIdCounter - 1);
         uint256 count = 0;
 
-        for (uint256 i = 1; i < objectIdCounter; i++) {
+        for (uint256 i = 0; i < objectIdCounter - 1; i++) {
             if (landConnections[i].landId == _landId) {
                 filteredObjects[count] = landConnections[i];
                 count++;
@@ -169,14 +168,10 @@ contract LandParameters {
     }
 
     function getAllObjects() public view returns (LandArray[] memory) {
-        LandArray[] memory allObjects = new LandArray[](objectIdCounter - 1);
-        for (uint256 i = 1; i < objectIdCounter; i++) {
-            allObjects[i - 1] = landConnections[i];
-        }
-        return allObjects;
+        return landConnections;
     }
 
     function hasItem(uint256 _id) private view returns (bool) {
-        return landConnections[_id].id != 0;
+        return _id > 0 && _id <= objectIdCounter;
     }
 }

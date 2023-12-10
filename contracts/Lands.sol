@@ -23,53 +23,53 @@ contract Lands {
         string title;
     }
 
-    mapping(uint256 => ContractObject) public contractObjects;
+    ContractObject[] public contractObjects;
     uint256 private objectIdCounter = 1;
 
     constructor() {
         addObject(
+            "Company 1",
+            "Title 1",
             150,
             "1210100000:03:176:0029",
-            LegalStatus.LandsOfSettlements,
-            "Company 1",
-            "Title 1"
+            LegalStatus.LandsOfSettlements
         );
         addObject(
+            "Company 2",
+            "Title 2",
             200,
             "4820300000:08:245:0097",
-            LegalStatus.LandForConstruction,
-            "Company 2",
-            "Title 2"
+            LegalStatus.LandForConstruction
         );
         addObject(
+            "Company 3",
+            "Title 3",
             300,
             "6500800000:11:123:0145",
-            LegalStatus.AgriculturalLands,
-            "Company 3",
-            "Title 3"
+            LegalStatus.AgriculturalLands
         );
         addObject(
+            "Company 4",
+            "Title 4",
             300,
             "2910400000:05:311:0072",
-            LegalStatus.IndustrialAndCommercialLands,
-            "Company 4",
-            "Title 4"
+            LegalStatus.IndustrialAndCommercialLands
         );
         addObject(
+            "Company 5",
+            "Title 5",
             300,
             "8300100000:02:189:0013",
-            LegalStatus.LandObjectsAndSpecialPurposes,
-            "Company 5",
-            "Title 5"
+            LegalStatus.LandObjectsAndSpecialPurposes
         );
     }
 
     function addObject(
+        string memory _companyName,
+        string memory _title,
         uint256 _area,
         string memory _cadastralNumber,
-        LegalStatus _legalStatus,
-        string memory _companyName,
-        string memory _title
+        LegalStatus _legalStatus
     ) private {
         ContractObject memory newObject = ContractObject(
             objectIdCounter,
@@ -80,47 +80,39 @@ contract Lands {
             _companyName,
             _title
         );
-        contractObjects[objectIdCounter] = (newObject);
+        contractObjects.push(newObject);
         objectIdCounter++;
     }
 
     function createObject(
+        string memory _companyName,
+        string memory _title,
         uint256 _area,
         string memory _cadastralNumber,
-        LegalStatus _legalStatus,
-        string memory _companyName,
-        string memory _title
+        LegalStatus _legalStatus
     ) public {
-        addObject(_area, _cadastralNumber, _legalStatus, _companyName, _title);
+        addObject(_companyName, _title, _area, _cadastralNumber, _legalStatus);
     }
 
     function getObjectCount() public view returns (uint256) {
         return objectIdCounter - 1;
     }
 
-    function getObject(
-        uint256 _id
-    ) public view returns (ContractObject memory) {
-        return contractObjects[_id];
+    function getObject(uint256 _id) public view returns (ContractObject memory) {
+        require(_id < objectIdCounter, "Object not found");
+        return contractObjects[_id - 1];
     }
 
     function getAllObjects() public view returns (ContractObject[] memory) {
-        ContractObject[] memory allObjects = new ContractObject[](
-            objectIdCounter - 1
-        );
-        for (uint256 i = 1; i < objectIdCounter; i++) {
-            allObjects[i - 1] = contractObjects[i];
-        }
-        return allObjects;
+        return contractObjects;
     }
 
     function deleteObject(uint256 objectId) public {
-        require(hasItem(objectId), "Invalid object ID");
-        
-        ContractObject storage parameter = contractObjects[objectId];
-        require(parameter.owner == msg.sender, "Caller is not the owner");
-        
-        delete contractObjects[objectId];
+        require(objectId < objectIdCounter, "Object not found");
+        require(contractObjects[objectId - 1].owner == msg.sender, "Caller is not the owner");
+
+        // Delete the object data
+        delete contractObjects[objectId - 1];
     }
 
     function editObject(
@@ -131,9 +123,9 @@ contract Lands {
         string memory companyName,
         string memory title
     ) public {
-        require(!hasItem(objectId), "Object not found");
+        require(objectId < objectIdCounter, "Object not found");
 
-        ContractObject storage obj = contractObjects[objectId];
+        ContractObject storage obj = contractObjects[objectId - 1];
         require(obj.owner == msg.sender, "Caller is not the owner");
 
         obj.area = area;
@@ -141,9 +133,5 @@ contract Lands {
         obj.legalStatus = legalStatus;
         obj.companyName = companyName;
         obj.title = title;
-    }
-
-    function hasItem(uint256 _id) private view returns (bool) {
-        return contractObjects[_id].id != 0;
     }
 }
