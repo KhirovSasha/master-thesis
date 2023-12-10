@@ -10,11 +10,9 @@ export function CreateParameter({ parametersAt }) {
     nitrogenContent: 0,
     phosphorusContent: 0,
     potassiumContent: 0,
-    area: 0
+    title: ''
   });
   
-
-  const [contractValue, setContractValue] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   
@@ -23,7 +21,7 @@ export function CreateParameter({ parametersAt }) {
     event.preventDefault();
     try {
       const solidityNumber = ethers.BigNumber.from(id);
-      await parametersAt.createParameter(solidityNumber, formData.desctiption, String(formData.pHLevel), String(formData.organicMatter), String(formData.nitrogenContent), String(formData.phosphorusContent), String(formData.potassiumContent), String(formData.area));
+      await parametersAt.createParameter(solidityNumber, formData.title, formData.desctiption, String(formData.pHLevel), String(formData.organicMatter), String(formData.nitrogenContent), String(formData.phosphorusContent), String(formData.potassiumContent));
       navigate(`/land-parameters/${parseInt(id, 10)}`);
     } catch (error) {
       console.error("Error:", error);
@@ -93,6 +91,15 @@ export function CreateParameter({ parametersAt }) {
             value={formData.potassiumContent}
             type="number"
             onChange={handleChange("potassiumContent")}
+          ></input>
+          <label htmlFor="value" class="form-label">
+            title
+          </label>
+          <input
+            className="form-control"
+            value={formData.title}
+            type="number"
+            onChange={handleChange("title")}
           ></input>
         </div>
         <button type="submit" className="btn btn-primary">

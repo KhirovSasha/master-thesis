@@ -15,7 +15,7 @@ function EditParameter({ parametersAt }) {
   const [phosphorusContent, setPhosphorusContent] = useState(0);
   const [potassiumContent, setPotassiumContent] = useState(0);
   const [nitrogenContent, setNitrogenContent] = useState(0);
-  const [area, setArea] = [0];
+  const [title, setTitle] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +29,8 @@ function EditParameter({ parametersAt }) {
         setPhosphorusContent(parameter.nitrogenContent);
         setPotassiumContent(parameter.phosphorusContent);
         setNitrogenContent(parameter.nitrogenContent);
+        setTitle(parameter.title);
+
       } catch (error) {
         console.error("Error fetching land data:", error);
       }
@@ -46,13 +48,13 @@ function EditParameter({ parametersAt }) {
     try {
       await parametersAt.editObject(
         solidityID,
+        String(title),
         String(description),
         String(pHLevel),
         String(organicMatter),
         String(nitrogenContent),
         String(phosphorusContent),
-        String(potassiumContent),
-        String(area)
+        String(potassiumContent)
       );
       navigate("/");
     } catch (error) {
@@ -121,6 +123,14 @@ function EditParameter({ parametersAt }) {
                 value={potassiumContent}
                 type="number"
                 onChange={(event) => setPotassiumContent(event.target.value)}
+              ></input>
+              <label htmlFor="value" class="form-label">
+                title
+              </label>
+              <input
+                className="form-control"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
               ></input>
             </div>
             <button type="submit" className="btn btn-primary">
