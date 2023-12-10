@@ -6,6 +6,7 @@ contract LandParameters {
         uint256 id;
         uint256 landId;
         uint256 dateTime;
+        string title; // New field: title
         string description;
         address owner;
         string pHLevel;
@@ -25,10 +26,12 @@ contract LandParameters {
         string[] memory _organicMatter,
         string[] memory _nitrogenContent,
         string[] memory _phosphorusContent,
-        string[] memory _potassiumContent
+        string[] memory _potassiumContent,
+        string[] memory _title
     ) {
         require(
-            _landId.length == _description.length &&
+            _landId.length == _title.length &&
+                _title.length == _description.length &&
                 _description.length == _pHLevel.length &&
                 _pHLevel.length == _organicMatter.length &&
                 _organicMatter.length == _nitrogenContent.length &&
@@ -40,6 +43,7 @@ contract LandParameters {
         for (uint256 i = 0; i < _landId.length; i++) {
             addObject(
                 _landId[i],
+                _title[i],
                 _description[i],
                 _pHLevel[i],
                 _organicMatter[i],
@@ -52,6 +56,7 @@ contract LandParameters {
 
     function createParameter(
         uint256 _landId,
+        string memory _title,
         string memory _description,
         string memory _pHLevel,
         string memory _organicMatter,
@@ -61,6 +66,7 @@ contract LandParameters {
     ) public {
         addObject(
             _landId,
+            _title,
             _description,
             _pHLevel,
             _organicMatter,
@@ -72,6 +78,7 @@ contract LandParameters {
 
     function addObject(
         uint256 _landId,
+        string memory _title,
         string memory _description,
         string memory _pHLevel,
         string memory _organicMatter,
@@ -83,6 +90,7 @@ contract LandParameters {
             objectIdCounter,
             _landId,
             block.timestamp,
+            _title,
             _description,
             msg.sender,
             _pHLevel,
@@ -98,6 +106,7 @@ contract LandParameters {
 
     function editObject(
         uint256 _id,
+        string memory _title,
         string memory _description,
         string memory _pHLevel,
         string memory _organicMatter,
@@ -110,6 +119,7 @@ contract LandParameters {
         LandArray storage landObject = landConnections[_id];
         require(landObject.owner == msg.sender, "Caller is not the owner");
 
+        landObject.title = _title;
         landObject.description = _description;
         landObject.dateTime = block.timestamp;
         landObject.pHLevel = _pHLevel;
