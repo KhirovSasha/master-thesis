@@ -115,6 +115,11 @@ contract Lands {
     }
 
     function deleteObject(uint256 objectId) public {
+        require(hasItem(objectId), "Invalid object ID");
+        
+        ContractObject storage parameter = contractObjects[objectId];
+        require(parameter.owner == msg.sender, "Caller is not the owner");
+        
         delete contractObjects[objectId];
     }
 

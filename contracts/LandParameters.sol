@@ -13,7 +13,6 @@ contract LandParameters {
         string nitrogenContent;
         string phosphorusContent;
         string potassiumContent;
-        string area;
     }
 
     mapping(uint256 => LandArray) public landConnections;
@@ -26,8 +25,7 @@ contract LandParameters {
         string[] memory _organicMatter,
         string[] memory _nitrogenContent,
         string[] memory _phosphorusContent,
-        string[] memory _potassiumContent,
-        string[] memory _area
+        string[] memory _potassiumContent
     ) {
         require(
             _landId.length == _description.length &&
@@ -35,8 +33,7 @@ contract LandParameters {
                 _pHLevel.length == _organicMatter.length &&
                 _organicMatter.length == _nitrogenContent.length &&
                 _nitrogenContent.length == _phosphorusContent.length &&
-                _phosphorusContent.length == _potassiumContent.length &&
-                _potassiumContent.length == _area.length,
+                _phosphorusContent.length == _potassiumContent.length,
             "Array lengths mismatch"
         );
 
@@ -48,8 +45,7 @@ contract LandParameters {
                 _organicMatter[i],
                 _nitrogenContent[i],
                 _phosphorusContent[i],
-                _potassiumContent[i],
-                _area[i]
+                _potassiumContent[i]
             );
         }
     }
@@ -61,8 +57,7 @@ contract LandParameters {
         string memory _organicMatter,
         string memory _nitrogenContent,
         string memory _phosphorusContent,
-        string memory _potassiumContent,
-        string memory _area
+        string memory _potassiumContent
     ) public {
         addObject(
             _landId,
@@ -71,8 +66,7 @@ contract LandParameters {
             _organicMatter,
             _nitrogenContent,
             _phosphorusContent,
-            _potassiumContent,
-            _area
+            _potassiumContent
         );
     }
 
@@ -83,8 +77,7 @@ contract LandParameters {
         string memory _organicMatter,
         string memory _nitrogenContent,
         string memory _phosphorusContent,
-        string memory _potassiumContent,
-        string memory _area
+        string memory _potassiumContent
     ) private {
         LandArray memory newObject = LandArray(
             objectIdCounter,
@@ -96,8 +89,7 @@ contract LandParameters {
             _organicMatter,
             _nitrogenContent,
             _phosphorusContent,
-            _potassiumContent,
-            _area
+            _potassiumContent
         );
 
         landConnections[objectIdCounter] = newObject;
@@ -111,14 +103,13 @@ contract LandParameters {
         string memory _organicMatter,
         string memory _nitrogenContent,
         string memory _phosphorusContent,
-        string memory _potassiumContent,
-        string memory _area
+        string memory _potassiumContent
     ) public {
         require(hasItem(_id), "Invalid object ID");
 
         LandArray storage landObject = landConnections[_id];
         require(landObject.owner == msg.sender, "Caller is not the owner");
-        
+
         landObject.description = _description;
         landObject.dateTime = block.timestamp;
         landObject.pHLevel = _pHLevel;
@@ -126,10 +117,14 @@ contract LandParameters {
         landObject.nitrogenContent = _nitrogenContent;
         landObject.phosphorusContent = _phosphorusContent;
         landObject.potassiumContent = _potassiumContent;
-        landObject.area = _area;
     }
 
     function deleteObject(uint256 _id) public {
+        require(hasItem(_id), "Invalid object ID");
+
+        LandArray storage landObject = landConnections[_id];
+        require(landObject.owner == msg.sender, "Caller is not the owner");
+
         delete landConnections[_id];
     }
 

@@ -54,7 +54,6 @@ async function main() {
   const nitrogenContent = [];
   const phosphorusContent = [];
   const potassiumContent = [];
-  const area = [];
 
   for (let i = 1; i < rows.length; i++) {
     const rowData = rows[i];
@@ -67,7 +66,6 @@ async function main() {
       _nitrogenContent,
       _phosphorusContent,
       _potassiumContent,
-      _area,
     ] = rowData.map((item) => item.trim());
 
     landId.push(parseInt(_landId));
@@ -77,14 +75,13 @@ async function main() {
     nitrogenContent.push(_nitrogenContent);
     phosphorusContent.push(_phosphorusContent);
     potassiumContent.push(_potassiumContent);
-    area.push(_area);
   }
 
 
   for (const contract of contractsToDeploy) {
     let instance;
     if (contract.name == "LandParameters") {
-      instance = await contract.factory.deploy(landId, description, pHLevel, organicMatter, nitrogenContent, phosphorusContent, potassiumContent, area);
+      instance = await contract.factory.deploy(landId, description, pHLevel, organicMatter, nitrogenContent, phosphorusContent, potassiumContent);
     } else {
       instance = await contract.factory.deploy();
     }
