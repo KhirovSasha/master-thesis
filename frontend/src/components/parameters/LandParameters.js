@@ -7,6 +7,7 @@ export function LandParameters({ parametersAt, selectedAddress }) {
   const [loadData, setLoadData] = useState(false);
   const [arrayParameters, setArrayParameters] = useState([]);
   const { id } = useParams();
+  const [search, setSearch] = useState("");
 
   const fetchData = async () => {
     try {
@@ -49,12 +50,27 @@ export function LandParameters({ parametersAt, selectedAddress }) {
           >
             Add Parameter
           </Link>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search"
+              aria-describedby="basic-addon1"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
           <div className="row row-cols-1">
-            {arrayParameters.map((item) => (
+            {arrayParameters.filter(
+                (item) =>
+                  search.toLowerCase() === "" ||
+                  String(item.title)
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
+              ).map((item) => (
               <div className="col mb-4">
                 <div className="card" key={item.id}>
                   <div className="card-body">
-                    <h5 className="card-title">Card title</h5>
+                    <h5 className="card-title">{item.title}</h5>
                     <h6 className="card-subtitle mb-2 text-body-secondary">
                       Time: {formatUnixTimestamp(item.dateTime)}
                     </h6>
