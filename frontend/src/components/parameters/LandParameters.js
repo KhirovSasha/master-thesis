@@ -1,9 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import formatUnixTimestamp from '../../utils/mapDateTime'
+import formatUnixTimestamp from "../../utils/mapDateTime";
 
-export function LandParameters({ parametersAt }) {
+export function LandParameters({ parametersAt, selectedAddress }) {
   const [loadData, setLoadData] = useState(false);
   const [arrayParameters, setArrayParameters] = useState([]);
   const { id } = useParams();
@@ -60,27 +60,62 @@ export function LandParameters({ parametersAt }) {
                     </h6>
                     <h6>Owner: {item.owner}</h6>
                     <ul className="list-group list-group-flush">
-                      <li className="list-group-item">Nitrogen: {item.nitrogenContent}</li>
-                      <li className="list-group-item">PH Level: {item.pHLevel}</li>
-                      <li className="list-group-item">Organic Matter: {item.organicMatter}</li>
-                      <li className="list-group-item">Phosphorus: {item.phosphorusContent}</li>
-                      <li className="list-group-item">Potassium: {item.potassiumContent}</li>
+                      <li className="list-group-item">
+                        Nitrogen: {item.nitrogenContent}
+                      </li>
+                      <li className="list-group-item">
+                        PH Level: {item.pHLevel}
+                      </li>
+                      <li className="list-group-item">
+                        Organic Matter: {item.organicMatter}
+                      </li>
+                      <li className="list-group-item">
+                        Phosphorus: {item.phosphorusContent}
+                      </li>
+                      <li className="list-group-item">
+                        Potassium: {item.potassiumContent}
+                      </li>
                     </ul>
-                    <p className="card-text">
-                      {item.description}
-                    </p>
-                    <Link
-                      className="btn btn-primary ml-3"
-                      to={`/land-parameter/edit/${Number(item.id)}`}
-                    >
-                      Edit Parameter
-                    </Link>
-                    <button
-                      className="btn btn-danger ml-3"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      Delete
-                    </button>
+                    <p className="card-text">{item.description}</p>
+                    {selectedAddress.toLowerCase() !==
+                    item.owner.toLowerCase() ? (
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            alert("You are not owner of this Land")
+                          }
+                          class="btn btn-warning ml-3"
+                        >
+                          Edit Land
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            alert("You are not owner of this Land")
+                          }
+                          class="btn btn-warning ml-3"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        {" "}
+                        <Link
+                          className="btn btn-primary ml-3"
+                          to={`/land-parameter/edit/${Number(item.id)}`}
+                        >
+                          Edit Parameter
+                        </Link>
+                        <button
+                          className="btn btn-danger ml-3"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}  
 
                     {/*selectedAddress.toLowerCase() !==
                     item.owner.toLowerCase() ? (
