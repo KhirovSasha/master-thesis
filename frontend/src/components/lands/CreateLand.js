@@ -21,11 +21,11 @@ export function CreateLand({ par }) {
       const areaNumber = ethers.BigNumber.from(formData.areaValue);
 
       await par.createObject(
+        formData.companyName,
+        formData.title,
         areaNumber,
         formData.cadastralNumberValue,
         formData.legalStatus,
-        formData.companyName,
-        formData.title
       );
       navigate("/");
     } catch (error) {

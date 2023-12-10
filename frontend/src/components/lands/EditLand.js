@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { useNavigate, useParams } from "react-router-dom";
 import { LandTypes, LandTypeLabels } from "../../utils/enum";
 
-function EditLand({ par }) {
+function EditLand({ par, selectedAddress }) {
   const { id } = useParams();
   const [isOwner, setIsOwner] = useState(false);
  
@@ -21,13 +21,17 @@ function EditLand({ par }) {
       try {
         const solidityNumber = ethers.BigNumber.from(id);
         const land = await par.getObject(solidityNumber);
+        const test = await par.getAllObjects();
+        console.log(test);
 
-        setIsOwner(land.owner === par.account);
+        setIsOwner(land.owner.toLowerCase() == selectedAddress.toLowerCase());
+
         setArea(land.area);
         setCadastralNumber(land.cadastralNumber);
         setLegalStatus(land.legalStatus);
         setCompanyName(land.companyName);
         setTitle(land.title);
+        
 
 
         setIsLoading(false);
