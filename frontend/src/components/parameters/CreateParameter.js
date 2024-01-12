@@ -98,7 +98,6 @@ export function CreateParameter({ parametersAt }) {
           <input
             className="form-control"
             value={formData.title}
-            type="number"
             onChange={handleChange("title")}
           ></input>
         </div>

@@ -20,7 +20,7 @@ contract Lands {
         string cadastralNumber;
         LegalStatus legalStatus;
         string companyName;
-        string title;
+        string title;   
     }
 
     ContractObject[] public contractObjects;

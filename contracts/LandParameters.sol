@@ -6,7 +6,7 @@ contract LandParameters {
         uint256 id;
         uint256 landId;
         uint256 dateTime;
-        string title; // New field: title
+        string title; 
         string description;
         address owner;
         string pHLevel;
